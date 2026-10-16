@@ -1,0 +1,1390 @@
+<style>
+/* Autobackup to Cloud — Fresh theme + dark mode */
+#abd-app{
+  --abd-green:#20a53a;
+  --abd-green-hover:#1a8c31;
+  --abd-green-soft:#e8f6ec;
+  --abd-bg:transparent;
+  --abd-card:#ffffff;
+  --abd-ink:#333333;
+  --abd-muted:#888888;
+  --abd-line:#e6e8eb;
+  --abd-soft:#f7f8fa;
+  --abd-input-bg:#ffffff;
+  --abd-danger:#ef0808;
+  --abd-warn:#fc6d26;
+  --abd-ok:#20a53a;
+  --abd-shadow:0 1px 2px rgba(0,0,0,.04);
+  color:var(--abd-ink);
+  font-size:13px;
+  line-height:1.5;
+  padding:4px 2px 16px;
+  background:var(--abd-bg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+}
+#abd-app.abd-dark,
+html[data-theme="dark"] #abd-app,
+html.dark #abd-app,
+body.dark #abd-app,
+.theme-dark #abd-app,
+[data-theme="dark"] #abd-app,
+[data-theme-mode="dark"] #abd-app{
+  --abd-green:#3ecf5b;
+  --abd-green-hover:#2fba4a;
+  --abd-green-soft:rgba(32,165,58,.18);
+  --abd-card:#1e2228;
+  --abd-ink:#e6e8eb;
+  --abd-muted:#9aa3af;
+  --abd-line:#2f353d;
+  --abd-soft:#171a1f;
+  --abd-input-bg:#171a1f;
+  --abd-danger:#ff6b6b;
+  --abd-warn:#ffa94d;
+  --abd-ok:#3ecf5b;
+  --abd-shadow:none;
+}
+#abd-app *{box-sizing:border-box}
+#abd-app .abd-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 14px;margin:0 5px 12px;border:1px solid var(--abd-line);
+  border-radius:6px;background:var(--abd-card);box-shadow:var(--abd-shadow);
+}
+#abd-app .abd-head-title{display:flex;align-items:center;gap:10px;min-width:0}
+#abd-app .abd-logo{
+  width:36px;height:36px;border-radius:8px;flex:none;
+  background:linear-gradient(145deg,var(--abd-green),#148f2c);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;
+}
+#abd-app .abd-head h2{margin:0;font-size:15px;font-weight:600;color:var(--abd-ink)}
+#abd-app .abd-head p{margin:2px 0 0;font-size:12px;color:var(--abd-muted)}
+#abd-app .abd-stats{display:flex;gap:8px;flex-wrap:wrap}
+#abd-app .abd-stat{
+  min-width:78px;text-align:center;padding:6px 10px;border-radius:4px;
+  background:var(--abd-soft);border:1px solid var(--abd-line);
+}
+#abd-app .abd-stat b{display:block;font-size:16px;color:var(--abd-green);line-height:1.2}
+#abd-app .abd-stat span{font-size:11px;color:var(--abd-muted)}
+
+#abd-app .abd-tabs{
+  display:flex;gap:0;margin-bottom:12px;border-bottom:1px solid var(--abd-line);
+}
+#abd-app .abd-tab{
+  appearance:none;border:none;background:transparent;cursor:pointer;
+  padding:9px 16px;font-size:13px;color:var(--abd-muted);position:relative;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+#abd-app .abd-tab:hover{color:var(--abd-ink)}
+#abd-app .abd-tab.active{color:var(--abd-green);font-weight:600;border-bottom-color:var(--abd-green)}
+
+#abd-app .abd-panel{display:none}
+#abd-app .abd-panel.active{display:block}
+#abd-app .abd-card{
+  background:var(--abd-card);border:1px solid var(--abd-line);border-radius:6px;
+  padding:14px 16px;margin:0 5px 12px;box-shadow:var(--abd-shadow);
+}
+#abd-app .abd-card h3{margin:0 0 4px;font-size:14px;font-weight:600;color:var(--abd-ink)}
+#abd-app .abd-card .hint{margin:0 0 12px;font-size:12px;color:var(--abd-muted);line-height:1.55}
+#abd-app .abd-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end}
+#abd-app .abd-row label{display:block;font-size:12px;color:var(--abd-muted);margin-bottom:4px}
+#abd-app .abd-field{flex:1;min-width:180px}
+#abd-app .abd-field input:not([type="checkbox"]):not([type="radio"]),
+#abd-app .abd-field select,
+#abd-app .abd-field textarea,
+.abd-layer-body input:not([type="checkbox"]):not([type="radio"]),
+.abd-layer-body select,
+.abd-layer-body textarea{
+  width:100%;height:32px;padding:0 10px;border:1px solid var(--abd-line);
+  border-radius:4px;background:var(--abd-input-bg);color:var(--abd-ink);font-size:13px;outline:none;
+  box-sizing:border-box;
+}
+#abd-app .abd-field textarea,
+.abd-layer-body textarea{height:auto;min-height:88px;padding:8px 10px;font-family:Consolas,Monaco,monospace;resize:vertical}
+#abd-app .abd-field input:not([type="checkbox"]):not([type="radio"]):focus,
+#abd-app .abd-field select:focus,
+#abd-app .abd-field textarea:focus,
+.abd-layer-body input:not([type="checkbox"]):not([type="radio"]):focus,
+.abd-layer-body select:focus,
+.abd-layer-body textarea:focus{border-color:var(--abd-green)}
+
+#abd-app .abd-btn,
+.abd-layer-body .abd-btn{
+  display:inline-block;height:30px;line-height:28px;padding:0 14px;border-radius:4px;
+  border:1px solid var(--abd-green);background:var(--abd-green);color:#fff;font-size:12px;
+  cursor:pointer;vertical-align:middle;white-space:nowrap;
+}
+#abd-app .abd-btn:hover,
+.abd-layer-body .abd-btn:hover{background:var(--abd-green-hover);border-color:var(--abd-green-hover)}
+#abd-app .abd-btn.ghost,
+.abd-layer-body .abd-btn.ghost{background:transparent;color:var(--abd-green)}
+#abd-app .abd-btn.ghost:hover,
+.abd-layer-body .abd-btn.ghost:hover{background:var(--abd-green-soft)}
+#abd-app .abd-btn.danger{background:var(--abd-danger);border-color:var(--abd-danger);color:#fff}
+#abd-app .abd-btn.warn{background:var(--abd-warn);border-color:var(--abd-warn);color:#fff}
+#abd-app .abd-btn.ok{background:var(--abd-ok);border-color:var(--abd-ok);color:#fff}
+#abd-app .abd-btn:disabled{opacity:.5;cursor:not-allowed}
+
+#abd-app .abd-badge{
+  display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;line-height:18px;font-weight:500;
+}
+#abd-app .abd-badge.on,#abd-app .abd-badge.ok{background:var(--abd-green-soft);color:var(--abd-ok)}
+#abd-app .abd-badge.off{background:var(--abd-soft);color:var(--abd-muted);border:1px solid var(--abd-line)}
+#abd-app .abd-badge.fail{background:rgba(239,8,8,.12);color:var(--abd-danger)}
+#abd-app .abd-badge.run{background:rgba(252,109,38,.14);color:var(--abd-warn)}
+
+#abd-app .abd-table{width:100%;border-collapse:collapse}
+#abd-app .abd-table th,#abd-app .abd-table td{
+  padding:9px 8px;border-bottom:1px solid var(--abd-line);text-align:left;vertical-align:middle;font-size:12px;
+}
+#abd-app .abd-table th{color:var(--abd-muted);font-weight:500;background:var(--abd-soft)}
+#abd-app .abd-actions{display:flex;gap:6px;flex-wrap:wrap}
+#abd-app .abd-actions .abd-btn{height:26px;line-height:24px;padding:0 10px;font-size:12px}
+
+#abd-app .abd-pathbar,
+.abd-layer-body .abd-pathbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+#abd-app .abd-pathbar code,
+.abd-layer-body .abd-pathbar code{
+  flex:1;background:var(--abd-soft);border:1px solid var(--abd-line);padding:6px 10px;
+  border-radius:4px;font-size:12px;overflow:auto;color:var(--abd-ink);
+}
+#abd-app .abd-browser,
+.abd-layer-body .abd-browser{
+  max-height:200px;overflow:auto;border:1px solid var(--abd-line);border-radius:4px;background:var(--abd-soft);
+}
+#abd-app .abd-browser div,
+.abd-layer-body .abd-browser div{
+  padding:7px 10px;cursor:pointer;border-bottom:1px solid var(--abd-line);font-size:12px;color:var(--abd-ink);
+}
+#abd-app .abd-browser div:hover,
+.abd-layer-body .abd-browser div:hover{background:var(--abd-green-soft);color:var(--abd-green)}
+#abd-app .abd-db-list,
+.abd-layer-body .abd-db-list,
+#abd-modal-root .abd-db-list{
+  max-height:160px;overflow:auto;border:1px solid var(--abd-line,#e6e8eb);border-radius:4px;
+  padding:8px 10px;background:var(--abd-soft,#f7f8fa);
+}
+#abd-app .abd-db-list label,
+.abd-layer-body .abd-db-list label,
+#abd-modal-root .abd-db-list label,
+.abd-layer-body label.abd-db-item{
+  display:flex !important;align-items:center;gap:8px;margin:0 0 6px !important;
+  padding:4px 2px;font-size:12px;color:var(--abd-ink,#333);cursor:pointer;
+  line-height:1.4;font-weight:400;
+}
+#abd-app .abd-db-list label:last-child,
+.abd-layer-body .abd-db-list label:last-child,
+#abd-modal-root .abd-db-list label:last-child{margin-bottom:0 !important}
+#abd-modal-root .abd-db-list input[type="checkbox"],
+.abd-layer-body .abd-db-list input[type="checkbox"],
+.abd-layer-body input.abd-db-cb{
+  width:14px !important;height:14px !important;min-width:14px !important;
+  margin:0 !important;padding:0 !important;border:none !important;
+  border-radius:2px !important;flex:none !important;
+  accent-color:#20a53a;cursor:pointer;
+  appearance:auto !important;-webkit-appearance:checkbox !important;
+  background:transparent !important;box-shadow:none !important;
+}
+#abd-modal-root .abd-db-group-title,
+.abd-layer-body .abd-db-group-title{
+  display:block;margin:8px 0 6px;font-size:12px;font-weight:600;color:var(--abd-ink,#333);
+}
+#abd-modal-root .abd-db-group-title:first-child,
+.abd-layer-body .abd-db-group-title:first-child{margin-top:0}
+#abd-modal-root .abd-db-empty,
+.abd-layer-body .abd-db-empty{
+  margin-bottom:8px;color:var(--abd-muted,#888);font-size:12px;
+}
+#abd-app .abd-auth-url{
+  word-break:break-all;background:var(--abd-soft);border:1px solid var(--abd-line);
+  padding:10px;border-radius:4px;font-size:12px;margin:8px 0;color:var(--abd-ink);
+}
+#abd-app .abd-empty{text-align:center;color:var(--abd-muted);padding:28px 10px;font-size:12px}
+#abd-app .abd-steps{font-size:12px;color:var(--abd-muted);line-height:1.7;padding-left:18px;margin:0}
+#abd-app .abd-steps a{color:var(--abd-green)}
+#abd-app code{font-family:Consolas,Monaco,monospace;font-size:12px}
+
+/* layer / modal — theme tokens live on the root so chrome + body stay in sync */
+.abd-layer-body{
+  padding:14px 16px 8px;color:var(--abd-ink,#333);font-size:13px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;
+  background:transparent;
+}
+.abd-layer-body .abd-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;align-items:flex-end}
+.abd-layer-body .abd-field{flex:1;min-width:160px}
+.abd-layer-body .abd-field label{display:block;font-size:12px;color:var(--abd-muted,#888);margin-bottom:4px}
+.abd-layer-body .abd-hint{font-size:12px;color:var(--abd-muted,#888);margin:0 0 10px}
+.abd-layer-body .abd-check{display:inline-flex;align-items:center;gap:6px;margin-right:14px;font-size:12px;color:var(--abd-ink,#333)}
+.abd-layer-body .abd-steps-log{font-size:12px;color:var(--abd-muted,#888);line-height:1.7;max-height:220px;overflow:auto;background:var(--abd-soft,#f7f8fa);border:1px solid var(--abd-line,#e6e8eb);border-radius:4px;padding:10px}
+
+/* Nested dialog — own stacking context ABOVE Soft shade/window */
+#abd-modal-root{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:12px;box-sizing:border-box;
+  /* light defaults */
+  --abd-green:#20a53a;--abd-green-hover:#1a8c31;--abd-green-soft:#e8f6ec;
+  --abd-ink:#333;--abd-muted:#888;--abd-line:#e6e8eb;--abd-soft:#f7f8fa;
+  --abd-input-bg:#fff;--abd-panel:#fff;--abd-ok:#20a53a;--abd-danger:#ef0808;--abd-warn:#fc6d26;
+  --abd-btn-ghost-bg:#f1f1f1;--abd-btn-ghost-border:#ddd;--abd-btn-ghost-ink:#555;
+  color-scheme:light;
+}
+#abd-modal-root.abd-dark{
+  --abd-green:#3ecf5b;--abd-green-hover:#2fba4a;--abd-green-soft:rgba(32,165,58,.18);
+  --abd-ink:#e6e8eb;--abd-muted:#9aa3af;--abd-line:#2f353d;--abd-soft:#171a1f;
+  --abd-input-bg:#171a1f;--abd-panel:#1e2228;--abd-ok:#3ecf5b;--abd-danger:#ff6b6b;--abd-warn:#ffa94d;
+  --abd-btn-ghost-bg:#2a3038;--abd-btn-ghost-border:#3a424c;--abd-btn-ghost-ink:#e6e8eb;
+  color-scheme:dark;
+}
+#abd-modal-root .abd-modal-shade{
+  position:absolute;inset:0;background:rgba(0,0,0,.55);
+}
+#abd-modal-root .abd-modal-panel{
+  position:relative;z-index:2;width:100%;max-height:min(90vh, 720px);
+  display:flex;flex-direction:column;
+  background:var(--abd-panel) !important;color:var(--abd-ink) !important;
+  border-radius:6px;overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);border:1px solid var(--abd-line) !important;
+}
+#abd-modal-root .abd-modal-title{
+  flex:none;padding:12px 16px;font-size:14px;font-weight:600;
+  border-bottom:1px solid var(--abd-line) !important;
+  background:var(--abd-panel) !important;color:var(--abd-ink) !important;
+}
+#abd-modal-root .abd-modal-body{
+  flex:1 1 auto;overflow:auto;min-height:0;-webkit-overflow-scrolling:touch;
+  background:var(--abd-panel) !important;color:var(--abd-ink) !important;
+}
+#abd-modal-root .abd-modal-foot{
+  flex:none;padding:10px 16px;border-top:1px solid var(--abd-line) !important;
+  background:var(--abd-panel) !important;color:var(--abd-ink) !important;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  position:relative;z-index:3;
+}
+#abd-modal-root .abd-modal-foot-left{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+#abd-modal-root .abd-modal-foot-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+#abd-modal-root .abd-modal-foot .abd-check{
+  display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--abd-ink) !important;cursor:pointer;user-select:none;
+}
+#abd-modal-root .abd-modal-foot .abd-check input{width:14px;height:14px;margin:0;cursor:pointer;accent-color:#20a53a}
+
+/* Force form controls inside modal (beat Soft global white input styles) */
+#abd-modal-root .abd-layer-body{
+  background:transparent !important;color:var(--abd-ink) !important;
+}
+#abd-modal-root input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+#abd-modal-root select,
+#abd-modal-root textarea{
+  width:100%;height:32px;padding:0 10px;border:1px solid var(--abd-line) !important;
+  border-radius:4px;background:var(--abd-input-bg) !important;color:var(--abd-ink) !important;
+  font-size:13px;outline:none;box-sizing:border-box;
+  color-scheme:inherit;
+}
+#abd-modal-root textarea{height:auto;min-height:88px;padding:8px 10px;font-family:Consolas,Monaco,monospace;resize:vertical}
+#abd-modal-root input:focus,
+#abd-modal-root select:focus,
+#abd-modal-root textarea:focus{border-color:var(--abd-green) !important}
+#abd-modal-root .abd-pathbar code,
+#abd-modal-root .abd-browser,
+#abd-modal-root .abd-db-list,
+#abd-modal-root .abd-steps-log{
+  background:var(--abd-soft) !important;border-color:var(--abd-line) !important;color:var(--abd-ink) !important;
+}
+#abd-modal-root .abd-browser div{
+  border-bottom-color:var(--abd-line) !important;color:var(--abd-ink) !important;
+}
+#abd-modal-root .abd-browser div:hover{background:var(--abd-green-soft) !important;color:var(--abd-green) !important}
+#abd-modal-root .abd-db-list label,
+#abd-modal-root .abd-db-group-title,
+#abd-modal-root .abd-field label,
+#abd-modal-root .abd-hint,
+#abd-modal-root .abd-db-empty{color:var(--abd-muted) !important}
+#abd-modal-root .abd-db-list label,
+#abd-modal-root label.abd-db-item{color:var(--abd-ink) !important}
+#abd-modal-root .abd-db-group-title{color:var(--abd-ink) !important;font-weight:600}
+
+/* Match aaPanel Soft / Fresh dialog buttons (Create / Cancel) */
+#abd-modal-root .abd-modal-foot .btn,
+#abd-modal-root .abd-btn{
+  display:inline-block;height:30px;line-height:28px;padding:0 15px;margin:0;
+  border-radius:4px;font-size:12px;font-weight:400;cursor:pointer;
+  vertical-align:middle;text-align:center;text-decoration:none;
+  box-sizing:border-box;appearance:none;-webkit-appearance:none;
+}
+#abd-modal-root .abd-modal-foot .btn-success,
+#abd-modal-root .abd-btn:not(.ghost):not(.danger):not(.warn){
+  color:#fff !important;
+  background-color:var(--abd-green) !important;
+  border:1px solid var(--abd-green) !important;
+}
+#abd-modal-root .abd-modal-foot .btn-success:hover,
+#abd-modal-root .abd-btn:not(.ghost):not(.danger):not(.warn):hover{
+  background-color:var(--abd-green-hover) !important;
+  border-color:var(--abd-green-hover) !important;
+}
+#abd-modal-root .abd-modal-foot .btn-default,
+#abd-modal-root .abd-btn.ghost{
+  color:var(--abd-btn-ghost-ink) !important;
+  background-color:var(--abd-btn-ghost-bg) !important;
+  border:1px solid var(--abd-btn-ghost-border) !important;
+}
+#abd-modal-root .abd-modal-foot .btn-default:hover,
+#abd-modal-root .abd-btn.ghost:hover{
+  filter:brightness(1.08);
+}
+#abd-modal-root .abd-browser{max-height:140px}
+#abd-modal-root .abd-db-list{max-height:140px}
+
+/* Soft / layui host window (title + content) — light & dark */
+.layui-layer.abd-soft-theme{
+  background:#fff !important;
+  border-color:#e6e8eb !important;
+  color-scheme:light;
+}
+.layui-layer.abd-soft-theme .layui-layer-title,
+.layui-layer-title.abd-soft-title{
+  background:#fff !important;
+  color:#333 !important;
+  border-bottom:1px solid #e6e8eb !important;
+  height:42px !important;line-height:42px !important;
+}
+.layui-layer.abd-soft-theme .layui-layer-content,
+.layui-layer-content.abd-soft-content{
+  background:#fff !important;
+  color:#333 !important;
+}
+.layui-layer.abd-soft-theme .layui-layer-setwin span,
+.layui-layer.abd-soft-theme .layui-layer-setwin a{
+  color:#666 !important;
+}
+
+/* Soft dark */
+.layui-layer.abd-soft-theme.abd-dark,
+.layui-layer.abd-soft-theme.abd-dark .layui-layer-title,
+.layui-layer-title.abd-soft-title.abd-dark,
+html[data-theme="dark"] .layui-layer.abd-soft-theme .layui-layer-title,
+html.dark .layui-layer.abd-soft-theme .layui-layer-title,
+body.dark .layui-layer.abd-soft-theme .layui-layer-title,
+.theme-dark .layui-layer.abd-soft-theme .layui-layer-title,
+[data-theme="dark"] .layui-layer.abd-soft-theme .layui-layer-title,
+[data-theme-mode="dark"] .layui-layer.abd-soft-theme .layui-layer-title{
+  background:#1e2228 !important;
+  color:#e6e8eb !important;
+  border-bottom-color:#2f353d !important;
+}
+.layui-layer.abd-soft-theme.abd-dark,
+html[data-theme="dark"] .layui-layer.abd-soft-theme,
+html.dark .layui-layer.abd-soft-theme,
+body.dark .layui-layer.abd-soft-theme,
+.theme-dark .layui-layer.abd-soft-theme,
+[data-theme="dark"] .layui-layer.abd-soft-theme,
+[data-theme-mode="dark"] .layui-layer.abd-soft-theme{
+  background:#1e2228 !important;
+  border-color:#2f353d !important;
+  color-scheme:dark;
+}
+.layui-layer.abd-soft-theme.abd-dark .layui-layer-content,
+.layui-layer-content.abd-soft-content.abd-dark,
+html[data-theme="dark"] .layui-layer.abd-soft-theme .layui-layer-content,
+html.dark .layui-layer.abd-soft-theme .layui-layer-content,
+body.dark .layui-layer.abd-soft-theme .layui-layer-content,
+.theme-dark .layui-layer.abd-soft-theme .layui-layer-content,
+[data-theme="dark"] .layui-layer.abd-soft-theme .layui-layer-content,
+[data-theme-mode="dark"] .layui-layer.abd-soft-theme .layui-layer-content{
+  background:#1e2228 !important;
+  color:#e6e8eb !important;
+}
+.layui-layer.abd-soft-theme.abd-dark .layui-layer-setwin span,
+.layui-layer.abd-soft-theme.abd-dark .layui-layer-setwin a,
+html[data-theme="dark"] .layui-layer.abd-soft-theme .layui-layer-setwin a,
+html.dark .layui-layer.abd-soft-theme .layui-layer-setwin a,
+body.dark .layui-layer.abd-soft-theme .layui-layer-setwin a{
+  color:#9aa3af !important;
+  filter:brightness(1.35);
+}
+</style>
+
+<div id="abd-app">
+  <div class="abd-head">
+    <div class="abd-head-title">
+      <div class="abd-logo">AD</div>
+      <div>
+        <h2>Autobackup to Cloud</h2>
+        <p>Backup folders &amp; databases to Drive / S3 / R2 / B2 / Spaces…</p>
+      </div>
+    </div>
+    <div class="abd-stats">
+      <div class="abd-stat"><b id="abd-stat-linked">—</b><span>Storage</span></div>
+      <div class="abd-stat"><b id="abd-stat-schedules">0</b><span>Schedules</span></div>
+      <div class="abd-stat"><b id="abd-stat-enabled">0</b><span>Active</span></div>
+    </div>
+  </div>
+
+  <div class="abd-tabs">
+    <button type="button" class="abd-tab active" data-tab="storage">Storage</button>
+    <button type="button" class="abd-tab" data-tab="schedules">Schedules</button>
+    <button type="button" class="abd-tab" data-tab="logs">Logs</button>
+    <button type="button" class="abd-tab" data-tab="help">Setup</button>
+  </div>
+
+  <div class="abd-panel active" id="abd-tab-storage">
+    <div class="abd-card">
+      <h3>Active storage</h3>
+      <p class="hint" id="abd-storage-summary">Checking…</p>
+      <div class="abd-row">
+        <div class="abd-field">
+          <label>Provider</label>
+          <select id="abd-provider"></select>
+        </div>
+        <button type="button" class="abd-btn" onclick="ABD.applyProvider()">Use provider</button>
+        <button type="button" class="abd-btn ghost" onclick="ABD.testStorage()">Test connection</button>
+        <button type="button" class="abd-btn ghost" onclick="ABD.refresh()">Refresh</button>
+      </div>
+      <p class="hint" id="abd-provider-hint" style="margin-top:0"></p>
+    </div>
+
+    <div id="abd-box-gdrive">
+      <div class="abd-card">
+        <h3>Google Drive — OAuth credentials</h3>
+        <p class="hint">Upload <code>credentials.json</code> from Google Cloud (Desktop app), or paste Client ID / Secret.</p>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Upload credentials.json</label>
+            <input type="file" id="abd-cred-file" accept=".json,application/json">
+          </div>
+          <button type="button" class="abd-btn" onclick="ABD.uploadCredentials()">Upload</button>
+        </div>
+        <p class="hint" id="abd-cred-status" style="margin-top:0">No credentials.json on server yet.</p>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Client ID <span style="opacity:.7">(optional if uploaded)</span></label>
+            <input type="text" id="abd-client-id" placeholder="xxxxx.apps.googleusercontent.com">
+          </div>
+          <div class="abd-field">
+            <label>Client Secret</label>
+            <input type="password" id="abd-client-secret" placeholder="GOCSPX-…">
+          </div>
+        </div>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Drive backup folder name</label>
+            <input type="text" id="abd-folder-name" value="aaPanel Backups">
+          </div>
+        </div>
+        <div class="abd-row">
+          <button type="button" class="abd-btn ghost" onclick="ABD.saveClient()">Save Client ID / Secret</button>
+          <button type="button" class="abd-btn ghost" onclick="ABD.saveFolderName()">Save folder name</button>
+          <button type="button" class="abd-btn danger" id="abd-btn-unlink" onclick="ABD.unlink()" style="display:none">Unlink Drive</button>
+        </div>
+      </div>
+
+      <div class="abd-card">
+        <h3>Link Google account</h3>
+        <p class="hint">Get auth URL → approve in browser → copy <code>http://localhost/?code=...</code> (page may fail to load) → paste below.</p>
+        <div class="abd-row">
+          <button type="button" class="abd-btn" onclick="ABD.getAuthUrl()">Get auth URL</button>
+        </div>
+        <div id="abd-auth-url-box" style="display:none">
+          <div class="abd-auth-url" id="abd-auth-url"></div>
+          <div class="abd-row">
+            <button type="button" class="abd-btn ghost" onclick="ABD.copyAuthUrl()">Copy URL</button>
+            <a class="abd-btn ghost" id="abd-auth-open" href="#" target="_blank" rel="noopener">Open in browser</a>
+          </div>
+        </div>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Authorization code or redirect URL</label>
+            <textarea id="abd-auth-code" placeholder="Paste code or full http://localhost/?code=…"></textarea>
+          </div>
+        </div>
+        <div class="abd-row">
+          <button type="button" class="abd-btn ok" onclick="ABD.exchangeCode()">Complete linking</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="abd-box-s3" style="display:none">
+      <div class="abd-card">
+        <h3>S3-compatible settings</h3>
+        <p class="hint">Works with AWS S3, Cloudflare R2, Backblaze B2, DigitalOcean Spaces, Linode Object Storage, Wasabi, MinIO, and any S3 API.</p>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Endpoint URL</label>
+            <input type="text" id="abd-s3-endpoint" placeholder="https://s3.amazonaws.com or provider endpoint">
+          </div>
+          <div class="abd-field">
+            <label>Region</label>
+            <input type="text" id="abd-s3-region" placeholder="us-east-1">
+          </div>
+        </div>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Access Key</label>
+            <input type="text" id="abd-s3-access" placeholder="Access Key ID" autocomplete="off">
+          </div>
+          <div class="abd-field">
+            <label>Secret Key</label>
+            <input type="password" id="abd-s3-secret" placeholder="Secret Access Key" autocomplete="new-password">
+          </div>
+        </div>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Bucket</label>
+            <input type="text" id="abd-s3-bucket" placeholder="my-backups">
+          </div>
+          <div class="abd-field">
+            <label>Prefix (folder path)</label>
+            <input type="text" id="abd-s3-prefix" placeholder="aapanel-backups/">
+          </div>
+        </div>
+        <div class="abd-row">
+          <label class="abd-check" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;cursor:pointer">
+            <input type="checkbox" id="abd-s3-pathstyle"> Path-style addressing (MinIO / some S3-compatible)
+          </label>
+        </div>
+        <div class="abd-row">
+          <button type="button" class="abd-btn" onclick="ABD.saveS3()">Save S3 settings</button>
+          <button type="button" class="abd-btn ghost" onclick="ABD.testStorage()">Test connection</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="abd-panel" id="abd-tab-schedules">
+    <div class="abd-card">
+      <div class="abd-row" style="justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0">Backup schedules</h3>
+        <button type="button" class="abd-btn" onclick="ABD.openScheduleModal()">+ New schedule</button>
+      </div>
+      <div id="abd-schedule-list" class="abd-empty">Loading…</div>
+    </div>
+  </div>
+
+  <div class="abd-panel" id="abd-tab-logs">
+    <div class="abd-card">
+      <div class="abd-row" style="justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="margin:0">Backup logs</h3>
+        <div class="abd-actions">
+          <button type="button" class="abd-btn ghost" onclick="ABD.loadLogs()">Refresh</button>
+          <button type="button" class="abd-btn danger" onclick="ABD.clearLogs()">Clear all</button>
+        </div>
+      </div>
+      <div id="abd-log-list" class="abd-empty">Loading…</div>
+    </div>
+  </div>
+
+  <div class="abd-panel" id="abd-tab-help">
+    <div class="abd-card">
+      <h3>Supported storage</h3>
+      <ul class="abd-steps">
+        <li><b>Google Drive</b> — OAuth Desktop client + credentials.json</li>
+        <li><b>AWS S3</b> — Access Key / Secret / Bucket / Region</li>
+        <li><b>Cloudflare R2</b> — S3 API endpoint <code>https://&lt;ACCOUNT_ID&gt;.r2.cloudflarestorage.com</code></li>
+        <li><b>Backblaze B2</b> — S3-compatible endpoint for your region</li>
+        <li><b>DigitalOcean Spaces</b> — e.g. <code>https://nyc3.digitaloceanspaces.com</code></li>
+        <li><b>Linode Object Storage</b> — e.g. <code>https://us-east-1.linodeobjects.com</code></li>
+        <li><b>Wasabi / MinIO / Other S3-compatible</b> — custom endpoint + keys</li>
+      </ul>
+    </div>
+    <div class="abd-card">
+      <h3>Google Drive setup</h3>
+      <ol class="abd-steps">
+        <li>Open <a href="https://console.cloud.google.com/" target="_blank" rel="noopener">Google Cloud Console</a> → create/select a project.</li>
+        <li>Enable <b>Google Drive API</b> → create OAuth client (Desktop app).</li>
+        <li>Upload <code>credentials.json</code> in the Storage tab → complete linking.</li>
+      </ol>
+    </div>
+    <div class="abd-card">
+      <h3>Exclude patterns</h3>
+      <p class="hint">One pattern per line — same as <code>zip -x</code>:</p>
+      <pre style="background:var(--abd-soft);border:1px solid var(--abd-line);padding:10px;border-radius:4px;font-size:12px;overflow:auto;margin:0;color:var(--abd-ink)">*/node_modules/*
+*/.git/*
+*.log
+file.jpg</pre>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+(function () {
+  var PLUGIN = 'autobackup_cloud_storage';
+  var state = {
+    drive: {},
+    storage: {},
+    schedules: [],
+    databases: { mysql: [], postgres: [] },
+    browsePath: '/www',
+    editing: null,
+    layerIndex: null
+  };
+
+  function hasDarkAttr(el) {
+    if (!el || !el.getAttribute) return false;
+    var theme = (el.getAttribute('data-theme') || el.getAttribute('data-theme-mode') || el.getAttribute('theme') || '').toLowerCase();
+    return theme === 'dark' || theme.indexOf('dark') !== -1;
+  }
+
+  function hasDarkClass(el) {
+    if (!el || !el.classList) return false;
+    return el.classList.contains('dark')
+      || el.classList.contains('theme-dark')
+      || el.classList.contains('dark-theme')
+      || el.classList.contains('bt-dark')
+      || el.classList.contains('el-dark')
+      || el.classList.contains('night')
+      || el.classList.contains('abd-dark');
+  }
+
+  function isDark() {
+    try {
+      var html = document.documentElement;
+      var body = document.body;
+      if (hasDarkAttr(html) || hasDarkClass(html)) return true;
+      if (hasDarkAttr(body) || hasDarkClass(body)) return true;
+
+      // aaPanel Soft / Vue often put theme on nested wrappers, not only html/body
+      if (document.querySelector(
+        'html.dark, body.dark, .theme-dark, .dark-theme, .bt-dark, .el-dark, .night,'
+        + '[data-theme="dark"], [data-theme-mode="dark"], [theme="dark"], #abd-app.abd-dark'
+      )) return true;
+
+      var keys = ['theme', 'bt_theme', 'panelTheme', 'panel_theme', 'darkMode', 'vite-theme', 'aapanel-theme'];
+      for (var i = 0; i < keys.length; i++) {
+        var v = localStorage.getItem(keys[i]);
+        if (v && /dark/i.test(v)) return true;
+      }
+      if (/(?:^|;)\s*(?:theme|bt_theme|panel_theme|darkMode)=[^;]*dark/i.test(document.cookie || '')) return true;
+
+      // Heuristic: Soft content uses light text in dark mode
+      var probe = document.querySelector('.layui-layer-content, .soft-man-con, .bt-w-main, #abd-app');
+      if (probe) {
+        var color = window.getComputedStyle(probe).color || '';
+        var m = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+        if (m) {
+          var lum = (0.299 * (+m[1]) + 0.587 * (+m[2]) + 0.114 * (+m[3])) / 255;
+          if (lum > 0.72) return true;
+        }
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  function findSoftLayer(el) {
+    if (!el) return null;
+    if (el.closest) {
+      var found = el.closest('.layui-layer');
+      if (found) return found;
+    }
+    var p = el.parentNode;
+    while (p && p !== document && p !== document.body) {
+      if (p.classList && p.classList.contains('layui-layer')) return p;
+      p = p.parentNode;
+    }
+    return null;
+  }
+
+  function applySoftLayerTheme(dark) {
+    var app = document.getElementById('abd-app');
+    if (!app) return;
+    var layer = findSoftLayer(app);
+    if (!layer) return;
+
+    layer.classList.add('abd-soft-theme');
+    layer.classList.toggle('abd-dark', !!dark);
+    try { layer.style.colorScheme = dark ? 'dark' : 'light'; } catch (e) {}
+
+    var title = layer.querySelector('.layui-layer-title');
+    var content = layer.querySelector('.layui-layer-content');
+    if (title) {
+      title.classList.add('abd-soft-title');
+      title.classList.toggle('abd-dark', !!dark);
+    }
+    if (content) {
+      content.classList.add('abd-soft-content');
+      content.classList.toggle('abd-dark', !!dark);
+    }
+  }
+
+  function applyTheme() {
+    var dark = isDark();
+    var app = document.getElementById('abd-app');
+    // Prefer the already-applied app theme if Soft markers are ambiguous
+    if (!dark && app && app.classList.contains('abd-dark')) dark = true;
+    if (app) app.classList.toggle('abd-dark', dark);
+    var modal = document.getElementById('abd-modal-root');
+    if (modal) {
+      modal.classList.toggle('abd-dark', dark);
+      try { modal.style.colorScheme = dark ? 'dark' : 'light'; } catch (e) {}
+    }
+    document.querySelectorAll('.abd-layer-body').forEach(function (el) {
+      el.classList.toggle('abd-dark', dark);
+    });
+    applySoftLayerTheme(dark);
+    return dark;
+  }
+
+  function toast(msg, ok) {
+    // Prefer native alert-style via layer.msg but force above Soft
+    if (window.layer && layer.msg) {
+      try {
+        var z = maxStackZ() + 5;
+        layer.msg(msg || '', { icon: ok === false ? 2 : 1, time: 2200, zIndex: z });
+        return;
+      } catch (e) {}
+    }
+    alert(msg || '');
+  }
+
+  /** Highest z-index among Soft windows / shades currently on the page. */
+  function maxStackZ() {
+    var max = 19891014;
+    try {
+      var nodes = document.querySelectorAll('.layui-layer, .layui-layer-shade, #abd-modal-root');
+      for (var i = 0; i < nodes.length; i++) {
+        var zi = parseInt(window.getComputedStyle(nodes[i]).zIndex, 10);
+        if (!isNaN(zi) && zi > max) max = zi;
+      }
+    } catch (e) {}
+    return Math.max(max, 20000000);
+  }
+
+  function mountTarget() {
+    return document.body;
+  }
+
+  function confirmAct(msg, cb) {
+    openLayer({
+      title: 'Confirm',
+      html: '<p class="abd-hint" style="margin:8px 0 4px;font-size:13px;color:inherit">' + esc(msg) + '</p>',
+      area: ['420px', 'auto'],
+      yesText: 'OK',
+      onYes: function (idx) {
+        closeLayer(idx);
+        cb && cb(true);
+      }
+    });
+  }
+
+  /**
+   * Nested dialog ABOVE Soft: custom overlay (not layer.open).
+   * options: { title, html, area, yesText, onYes, footLeftHtml }
+   * Also accepts legacy: openLayer(title, html, area, yesText, onYes)
+   */
+  function openLayer(options) {
+    if (typeof options === 'string') {
+      options = {
+        title: arguments[0],
+        html: arguments[1],
+        area: arguments[2],
+        yesText: arguments[3],
+        onYes: arguments[4]
+      };
+    }
+    options = options || {};
+    closeLayer();
+    applyTheme();
+    var dark = isDark();
+    var title = options.title || '';
+    var html = options.html || '';
+    var area = options.area || ['720px', 'auto'];
+    var yesText = options.yesText;
+    var onYes = options.onYes;
+    var footLeft = options.footLeftHtml || '';
+
+    var width = '720px';
+    if (Object.prototype.toString.call(area) === '[object Array]') {
+      width = area[0] || width;
+    }
+
+    var z = maxStackZ() + 10;
+    var root = document.createElement('div');
+    root.id = 'abd-modal-root';
+    if (dark) root.className = 'abd-dark';
+    root.style.zIndex = String(z);
+
+    var bodyClass = 'abd-layer-body' + (dark ? ' abd-dark' : '');
+    var panelStyle = 'max-width:' + width + ';width:100%;';
+
+    root.innerHTML =
+      '<div class="abd-modal-shade"></div>'
+      + '<div class="abd-modal-panel" style="' + panelStyle + '">'
+      + '<div class="abd-modal-title">' + esc(title) + '</div>'
+      + '<div class="abd-modal-body"><div class="' + bodyClass + '">' + html + '</div></div>'
+      + '<div class="abd-modal-foot">'
+      + '<div class="abd-modal-foot-left">' + footLeft + '</div>'
+      + '<div class="abd-modal-foot-right">'
+      + (onYes ? '<button type="button" class="btn btn-success btn-sm" id="abd-modal-yes">' + esc(yesText || 'Save') + '</button>' : '')
+      + '<button type="button" class="btn btn-default btn-sm" id="abd-modal-close">' + (onYes ? 'Cancel' : 'Close') + '</button>'
+      + '</div></div></div>';
+
+    mountTarget().appendChild(root);
+    state.layerIndex = 'abd-modal';
+
+    document.getElementById('abd-modal-close').onclick = function () { closeLayer(); };
+    var yesBtn = document.getElementById('abd-modal-yes');
+    if (yesBtn && onYes) {
+      yesBtn.onclick = function () { onYes('abd-modal'); };
+    }
+
+    applyTheme();
+    return 'abd-modal';
+  }
+
+  function closeLayer() {
+    var el = document.getElementById('abd-modal-root');
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+    var fb = document.getElementById('abd-modal-fallback');
+    if (fb && fb.parentNode) fb.parentNode.removeChild(fb);
+    state.layerIndex = null;
+  }
+
+  function post(method, data, cb) {
+    data = data || {};
+    var done = function (res) {
+      if (typeof res === 'string') {
+        try { res = JSON.parse(res); } catch (e) { res = { status: false, msg: res }; }
+      }
+      cb && cb(res || {});
+    };
+    if (window.$ && $.post) {
+      $.post('/plugin?action=a&name=' + PLUGIN + '&s=' + method, data, done).fail(function (xhr) {
+        done({ status: false, msg: 'Request failed: ' + (xhr.statusText || xhr.status) });
+      });
+      return;
+    }
+    var body = new URLSearchParams();
+    Object.keys(data).forEach(function (k) {
+      var v = data[k];
+      if (v !== undefined && v !== null) body.append(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
+    });
+    fetch('/plugin?action=a&name=' + PLUGIN + '&s=' + method, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString(),
+      credentials: 'same-origin'
+    }).then(function (r) { return r.json(); }).then(done).catch(function (e) {
+      done({ status: false, msg: String(e) });
+    });
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function fmtSize(n) {
+    n = Number(n) || 0;
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1048576).toFixed(2) + ' MB';
+  }
+
+  function statusBadge(st) {
+    st = (st || '').toLowerCase();
+    if (st === 'success' || st === 'ok') return '<span class="abd-badge ok">success</span>';
+    if (st === 'failed' || st === 'fail') return '<span class="abd-badge fail">failed</span>';
+    if (st === 'running') return '<span class="abd-badge run">running</span>';
+    return '<span class="abd-badge off">' + esc(st || '—') + '</span>';
+  }
+
+  var ABD = {
+    refresh: function () {
+      applyTheme();
+      post('get_status', {}, function (res) {
+        if (!res.status && res.storage === undefined && res.drive === undefined) {
+          toast(res.msg || 'Failed to load status', false);
+          return;
+        }
+        state.storage = res.storage || {};
+        state.drive = (res.storage && res.storage.drive) || res.drive || {};
+        ABD.renderStorage(state.storage);
+        document.getElementById('abd-stat-schedules').textContent = res.schedule_count || 0;
+        document.getElementById('abd-stat-enabled').textContent = res.enabled_count || 0;
+      });
+      ABD.loadSchedules();
+      ABD.loadLogs();
+    },
+
+    renderStorage: function (st) {
+      st = st || {};
+      var ready = !!st.ready;
+      document.getElementById('abd-stat-linked').textContent = ready ? 'ON' : 'OFF';
+      var sum = document.getElementById('abd-storage-summary');
+      if (sum) {
+        if (ready) {
+          sum.innerHTML = 'Active: <b>' + esc(st.provider_name || st.provider || '') + '</b>'
+            + (st.detail ? ' · ' + esc(st.detail) : '');
+        } else {
+          sum.textContent = 'No storage ready. Choose a provider and complete setup below.';
+        }
+      }
+
+      var sel = document.getElementById('abd-provider');
+      if (sel) {
+        var providers = st.providers || [];
+        var cur = st.provider || 'gdrive';
+        if (!sel.options.length || sel.getAttribute('data-filled') !== '1') {
+          sel.innerHTML = providers.map(function (p) {
+            return '<option value="' + esc(p.id) + '">' + esc(p.name) + '</option>';
+          }).join('');
+          sel.setAttribute('data-filled', '1');
+          sel.onchange = function () { ABD.onProviderChange(); };
+        }
+        sel.value = cur;
+      }
+      ABD.onProviderChange(true);
+
+      var drive = st.drive || state.drive || {};
+      state.drive = drive;
+      if (drive.client_id) document.getElementById('abd-client-id').value = drive.client_id;
+      if (drive.drive_folder_name) document.getElementById('abd-folder-name').value = drive.drive_folder_name;
+      var unlink = document.getElementById('abd-btn-unlink');
+      if (unlink) unlink.style.display = drive.linked ? '' : 'none';
+      var credStatus = document.getElementById('abd-cred-status');
+      if (credStatus) {
+        if (drive.credentials_uploaded || drive.client_configured) {
+          credStatus.innerHTML = 'credentials.json is ready on server'
+            + (drive.client_id ? ' · Client ID: <code>' + esc(drive.client_id) + '</code>' : '');
+        } else {
+          credStatus.textContent = 'No credentials.json on server yet.';
+        }
+      }
+
+      var s3 = st.s3 || {};
+      if (document.getElementById('abd-s3-endpoint')) {
+        document.getElementById('abd-s3-endpoint').value = s3.endpoint || '';
+        document.getElementById('abd-s3-region').value = s3.region || 'us-east-1';
+        document.getElementById('abd-s3-access').value = s3.access_key || '';
+        // don't overwrite secret if user is typing; only set placeholder hint
+        var sec = document.getElementById('abd-s3-secret');
+        if (sec && !sec.value) sec.placeholder = s3.secret_key_set ? '•••••••• (saved — leave blank to keep)' : 'Secret Access Key';
+        document.getElementById('abd-s3-bucket').value = s3.bucket || '';
+        document.getElementById('abd-s3-prefix').value = s3.prefix || 'aapanel-backups/';
+        document.getElementById('abd-s3-pathstyle').checked = !!s3.path_style;
+      }
+    },
+
+    onProviderChange: function (silent) {
+      var sel = document.getElementById('abd-provider');
+      var pid = sel ? sel.value : 'gdrive';
+      var providers = (state.storage && state.storage.providers) || [];
+      var meta = null;
+      for (var i = 0; i < providers.length; i++) if (providers[i].id === pid) meta = providers[i];
+      var hint = document.getElementById('abd-provider-hint');
+      if (hint) hint.textContent = meta && meta.hint ? meta.hint : '';
+      var isDrive = pid === 'gdrive' || (meta && meta.kind === 'gdrive');
+      document.getElementById('abd-box-gdrive').style.display = isDrive ? '' : 'none';
+      document.getElementById('abd-box-s3').style.display = isDrive ? 'none' : '';
+      if (!silent && meta && meta.kind === 's3' && meta.endpoint) {
+        var ep = document.getElementById('abd-s3-endpoint');
+        if (ep && (!ep.value || ep.value.indexOf('<') >= 0)) ep.value = meta.endpoint;
+        if (meta.region) document.getElementById('abd-s3-region').value = meta.region;
+        document.getElementById('abd-s3-pathstyle').checked = !!meta.path_style;
+      }
+    },
+
+    applyProvider: function () {
+      var pid = document.getElementById('abd-provider').value;
+      post('set_storage_provider', { provider: pid }, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status && res.data) {
+          state.storage = res.data;
+          ABD.renderStorage(res.data);
+        } else {
+          ABD.refresh();
+        }
+      });
+    },
+
+    saveS3: function () {
+      var secret = document.getElementById('abd-s3-secret').value;
+      var payload = {
+        provider: document.getElementById('abd-provider').value,
+        endpoint: document.getElementById('abd-s3-endpoint').value,
+        region: document.getElementById('abd-s3-region').value,
+        access_key: document.getElementById('abd-s3-access').value,
+        bucket: document.getElementById('abd-s3-bucket').value,
+        prefix: document.getElementById('abd-s3-prefix').value,
+        path_style: document.getElementById('abd-s3-pathstyle').checked ? '1' : '0'
+      };
+      if (secret) payload.secret_key = secret;
+      else if (state.storage && state.storage.s3 && state.storage.s3.secret_key_set) {
+        // keep existing — send empty and let backend preserve? Currently backend overwrites.
+        // Re-fetch and require re-entry OR change backend to keep if blank.
+        payload.secret_key = '';
+      }
+      // Always send; backend should keep old secret if blank
+      post('save_s3_config', payload, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) {
+          document.getElementById('abd-s3-secret').value = '';
+          ABD.refresh();
+        }
+      });
+    },
+
+    testStorage: function () {
+      var pid = document.getElementById('abd-provider').value;
+      post('test_storage', { provider: pid }, function (res) {
+        toast(res.msg || '', !!res.status);
+      });
+    },
+
+    uploadCredentials: function () {
+      var input = document.getElementById('abd-cred-file');
+      if (!input.files || !input.files.length) return toast('Please choose a credentials.json file', false);
+      var file = input.files[0];
+      if (file.size > 200 * 1024) return toast('File too large (max 200KB)', false);
+      var reader = new FileReader();
+      reader.onload = function () {
+        post('upload_credentials', { credentials_json: reader.result || '' }, function (res) {
+          toast(res.msg || '', !!res.status);
+          if (res.status) {
+            if (res.data && res.data.client_id) document.getElementById('abd-client-id').value = res.data.client_id;
+            input.value = '';
+            ABD.refresh();
+          }
+        });
+      };
+      reader.onerror = function () { toast('Failed to read file', false); };
+      reader.readAsText(file);
+    },
+
+    saveClient: function () {
+      post('save_oauth_client', {
+        client_id: document.getElementById('abd-client-id').value,
+        client_secret: document.getElementById('abd-client-secret').value
+      }, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) ABD.refresh();
+      });
+    },
+
+    saveFolderName: function () {
+      post('set_drive_folder_name', { folder_name: document.getElementById('abd-folder-name').value }, function (res) {
+        toast(res.msg || '', !!res.status);
+      });
+    },
+
+    getAuthUrl: function () {
+      post('get_auth_url', {}, function (res) {
+        if (!res.status) return toast(res.msg || 'Failed', false);
+        var url = (res.data && res.data.auth_url) || '';
+        document.getElementById('abd-auth-url-box').style.display = '';
+        document.getElementById('abd-auth-url').textContent = url;
+        document.getElementById('abd-auth-open').href = url;
+        toast('Auth URL ready');
+      });
+    },
+
+    copyAuthUrl: function () {
+      var t = document.getElementById('abd-auth-url').textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(t);
+      toast('Copied');
+    },
+
+    exchangeCode: function () {
+      post('exchange_code', { code: document.getElementById('abd-auth-code').value }, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) {
+          document.getElementById('abd-auth-code').value = '';
+          ABD.refresh();
+        }
+      });
+    },
+
+    unlink: function () {
+      confirmAct('Unlink Google Drive account?', function () {
+        post('unlink_drive', {}, function (res) {
+          toast(res.msg || '', !!res.status);
+          ABD.refresh();
+        });
+      });
+    },
+
+    loadSchedules: function () {
+      post('get_schedules', {}, function (res) {
+        var box = document.getElementById('abd-schedule-list');
+        var list = res.data || [];
+        state.schedules = list;
+        if (!list.length) {
+          box.innerHTML = '<div class="abd-empty">No schedules yet. Create one to start automatic backups.</div>';
+          return;
+        }
+        var html = '<table class="abd-table"><thead><tr><th>Name</th><th>Path</th><th>Cron</th><th>Status</th><th>Last run</th><th>Actions</th></tr></thead><tbody>';
+        list.forEach(function (s) {
+          html += '<tr>'
+            + '<td><b>' + esc(s.name) + '</b><div style="font-size:11px;color:var(--abd-muted)">' + esc(s.id) + '</div></td>'
+            + '<td><code>' + esc(s.source_path) + '</code></td>'
+            + '<td><code>' + esc(s.cron) + '</code></td>'
+            + '<td>' + (s.enabled ? '<span class="abd-badge on">running</span>' : '<span class="abd-badge off">stopped</span>') + ' ' + statusBadge(s.last_status) + '</td>'
+            + '<td>' + esc(s.last_run_at || '—') + '</td>'
+            + '<td><div class="abd-actions">'
+            + '<button type="button" class="abd-btn ghost" onclick="ABD.runNow(\'' + s.id + '\')">Run</button>'
+            + (s.enabled
+              ? '<button type="button" class="abd-btn warn" onclick="ABD.stopSchedule(\'' + s.id + '\')">Stop</button>'
+              : '<button type="button" class="abd-btn ok" onclick="ABD.startSchedule(\'' + s.id + '\')">Start</button>')
+            + '<button type="button" class="abd-btn ghost" onclick="ABD.openScheduleModal(\'' + s.id + '\')">Edit</button>'
+            + '<button type="button" class="abd-btn danger" onclick="ABD.deleteSchedule(\'' + s.id + '\')">Delete</button>'
+            + '</div></td></tr>';
+        });
+        html += '</tbody></table>';
+        box.innerHTML = html;
+      });
+    },
+
+    startSchedule: function (id) {
+      post('start_schedule', { id: id }, function (res) { toast(res.msg || '', !!res.status); ABD.refresh(); });
+    },
+    stopSchedule: function (id) {
+      post('stop_schedule', { id: id }, function (res) { toast(res.msg || '', !!res.status); ABD.refresh(); });
+    },
+    deleteSchedule: function (id) {
+      confirmAct('Delete this schedule and its cron job?', function () {
+        post('delete_schedule', { id: id }, function (res) { toast(res.msg || '', !!res.status); ABD.refresh(); });
+      });
+    },
+    runNow: function (id) {
+      post('run_now', { id: id }, function (res) {
+        toast(res.msg || '', !!res.status);
+        setTimeout(ABD.loadLogs, 1500);
+      });
+    },
+
+    loadDatabases: function (cb) {
+      post('list_databases', {}, function (res) {
+        state.databases = res.data || { mysql: [], postgres: [] };
+        state.databasesDebug = (res.data && res.data.debug) || {};
+        cb && cb();
+      });
+    },
+
+    browse: function (path) {
+      post('browse_path', { path: path || state.browsePath || '/www' }, function (res) {
+        if (!res.status) return toast(res.msg || 'Browse failed', false);
+        var d = res.data || {};
+        state.browsePath = d.path;
+        var bar = document.getElementById('abd-browse-path');
+        if (bar) bar.textContent = d.path;
+        var input = document.getElementById('abd-source-path');
+        if (input) input.value = d.path;
+        var box = document.getElementById('abd-browser');
+        if (!box) return;
+        var html = '';
+        if (d.parent) {
+          html += '<div data-path="' + esc(d.parent) + '">⬆ ..</div>';
+        }
+        (d.entries || []).forEach(function (e) {
+          html += '<div data-path="' + esc(e.path) + '">📁 ' + esc(e.name) + '</div>';
+        });
+        if (!html) html = '<div class="abd-empty">Empty directory</div>';
+        box.innerHTML = html;
+        box.onclick = function (ev) {
+          var t = ev.target;
+          while (t && t !== box && !t.getAttribute('data-path')) t = t.parentNode;
+          if (t && t.getAttribute) {
+            var p = t.getAttribute('data-path');
+            if (p) ABD.browse(p);
+          }
+        };
+      });
+    },
+
+    openScheduleModal: function (id) {
+      ABD.loadDatabases(function () {
+        var s = null;
+        if (id) {
+          for (var i = 0; i < state.schedules.length; i++) if (state.schedules[i].id === id) s = state.schedules[i];
+        }
+        state.editing = s;
+        var selected = {};
+        if (s && s.databases) s.databases.forEach(function (db) { selected[db.type + ':' + db.name] = true; });
+
+        function renderGroup(title, arr, type) {
+          if (!arr || !arr.length) {
+            return '<div class="abd-db-empty">' + esc(title) + ': none found</div>';
+          }
+          var h = '<div class="abd-db-group-title">' + esc(title) + '</div>';
+          arr.forEach(function (db) {
+            var key = type + ':' + db.name;
+            h += '<label class="abd-db-item">'
+              + '<input type="checkbox" class="abd-db-cb" data-type="' + type + '" data-name="' + esc(db.name) + '"'
+              + (selected[key] ? ' checked' : '') + '>'
+              + '<span>' + esc(db.name) + '</span></label>';
+          });
+          return h;
+        }
+
+        var excludes = (s && s.excludes) ? s.excludes.join('\n') : '*/node_modules/*\n*/.git/*\n*.log';
+        var html = ''
+          + '<div class="abd-row"><div class="abd-field"><label>Name</label><input id="abd-sch-name" value="' + esc(s && s.name || '') + '"></div>'
+          + '<div class="abd-field"><label>Preset</label><select id="abd-sch-preset">'
+          + '<option value="daily">Daily 02:00</option><option value="hourly">Hourly</option>'
+          + '<option value="every_6h">Every 6 hours</option><option value="weekly">Weekly (Sun 03:00)</option>'
+          + '<option value="monthly">Monthly (1st 04:00)</option><option value="custom">Custom cron</option>'
+          + '</select></div>'
+          + '<div class="abd-field"><label>Cron</label><input id="abd-sch-cron" value="' + esc(s && s.cron || '0 2 * * *') + '"></div></div>'
+          + '<div class="abd-row"><div class="abd-field"><label>Source folder</label><input id="abd-source-path" value="' + esc(s && s.source_path || '/www/wwwroot') + '"></div></div>'
+          + '<div class="abd-pathbar"><code id="abd-browse-path">' + esc(s && s.source_path || '/www/wwwroot') + '</code>'
+          + '<button type="button" class="abd-btn ghost" id="abd-browse-btn">Browse</button></div>'
+          + '<div class="abd-browser" id="abd-browser"></div>'
+          + '<div class="abd-row" style="margin-top:12px"><div class="abd-field"><label>Exclude patterns (zip -x)</label>'
+          + '<textarea id="abd-sch-excludes">' + esc(excludes) + '</textarea></div></div>'
+          + '<div class="abd-row"><div class="abd-field" style="max-width:220px"><label>Keep on storage (latest backups)</label>'
+          + '<input type="number" min="0" step="1" id="abd-sch-retention" value="' + esc(s && s.retention_count ? s.retention_count : 0) + '"></div>'
+          + '<div class="abd-field"><p class="abd-hint" style="margin:0 0 8px">0 = keep all. Otherwise older backups of this schedule are deleted from storage after each successful upload.</p></div></div>'
+          + '<div class="abd-row"><div class="abd-field"><label>Include databases</label>'
+          + '<p class="abd-hint" id="abd-db-hint" style="margin:0 0 6px">Scanning MySQL / PostgreSQL…</p>'
+          + '<div class="abd-db-list" id="abd-db-list">'
+          + renderGroup('MySQL', state.databases.mysql, 'mysql')
+          + renderGroup('PostgreSQL', state.databases.postgres, 'postgres')
+          + '</div></div></div>';
+
+        var footLeft = ''
+          + '<label class="abd-check"><input type="checkbox" id="abd-sch-enabled"' + (!s || s.enabled ? ' checked' : '') + '> Enabled</label>'
+          + '<label class="abd-check"><input type="checkbox" id="abd-sch-keep"' + (s && s.keep_local ? ' checked' : '') + '> Keep local zip</label>';
+
+        openLayer({
+          title: s ? 'Edit schedule' : 'New schedule',
+          html: html,
+          area: ['760px', 'auto'],
+          yesText: s ? 'Save' : 'Create',
+          footLeftHtml: footLeft,
+          onYes: function (idx) { ABD.saveSchedule(idx); }
+        });
+
+        setTimeout(function () {
+          var hint = document.getElementById('abd-db-hint');
+          if (hint) {
+            var mc = (state.databases.mysql || []).length;
+            var pc = (state.databases.postgres || []).length;
+            var dbg = state.databasesDebug || {};
+            if (mc + pc === 0) {
+              hint.textContent = 'No databases found. psql=' + (dbg.psql || 'missing')
+                + (dbg.has_pg_password ? '' : ' · no pgsql root password detected');
+            } else {
+              hint.textContent = 'Found ' + mc + ' MySQL, ' + pc + ' PostgreSQL database(s).';
+            }
+          }
+          var preset = (s && s.preset) || 'daily';
+          var sel = document.getElementById('abd-sch-preset');
+          if (sel) {
+            sel.value = preset;
+            sel.onchange = function () {
+              var map = { hourly: '0 * * * *', every_6h: '0 */6 * * *', daily: '0 2 * * *', weekly: '0 3 * * 0', monthly: '0 4 1 * *' };
+              if (map[this.value]) document.getElementById('abd-sch-cron').value = map[this.value];
+            };
+          }
+          var btn = document.getElementById('abd-browse-btn');
+          if (btn) btn.onclick = function () {
+            ABD.browse(document.getElementById('abd-source-path').value);
+          };
+          ABD.browse(s && s.source_path || '/www/wwwroot');
+        }, 50);
+      });
+    },
+
+    saveSchedule: function (layerIdx) {
+      var dbs = [];
+      var cbs = document.querySelectorAll('.abd-db-cb:checked');
+      for (var i = 0; i < cbs.length; i++) {
+        dbs.push({ type: cbs[i].getAttribute('data-type'), name: cbs[i].getAttribute('data-name') });
+      }
+      var payload = {
+        schedule_name: document.getElementById('abd-sch-name').value,
+        source_path: document.getElementById('abd-source-path').value,
+        excludes: document.getElementById('abd-sch-excludes').value,
+        cron: document.getElementById('abd-sch-cron').value,
+        preset: document.getElementById('abd-sch-preset').value,
+        databases: JSON.stringify(dbs),
+        enabled: document.getElementById('abd-sch-enabled').checked ? '1' : '0',
+        keep_local: document.getElementById('abd-sch-keep').checked ? '1' : '0',
+        retention_count: document.getElementById('abd-sch-retention').value || '0'
+      };
+      var method = 'create_schedule';
+      if (state.editing) {
+        method = 'update_schedule';
+        payload.id = state.editing.id;
+      }
+      post(method, payload, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) {
+          closeLayer(layerIdx);
+          state.editing = null;
+          ABD.refresh();
+        }
+      });
+    },
+
+    loadLogs: function () {
+      post('get_logs', { limit: 50 }, function (res) {
+        var box = document.getElementById('abd-log-list');
+        var list = res.data || [];
+        if (!list.length) {
+          box.innerHTML = '<div class="abd-empty">No backup logs yet.</div>';
+          return;
+        }
+        var html = '<table class="abd-table"><thead><tr><th>Time</th><th>Schedule</th><th>Status</th><th>Message</th><th></th></tr></thead><tbody>';
+        list.forEach(function (l) {
+          html += '<tr>'
+            + '<td>' + esc(l.started_at || '') + '</td>'
+            + '<td>' + esc(l.schedule_name || '') + '</td>'
+            + '<td>' + statusBadge(l.status) + '</td>'
+            + '<td>' + esc(l.message || '') + '</td>'
+            + '<td><button type="button" class="abd-btn ghost" onclick="ABD.showLogDetail(\'' + esc(l.schedule_id) + '\',\'' + esc(l.id) + '\')">Details</button></td>'
+            + '</tr>';
+        });
+        html += '</tbody></table>';
+        box.innerHTML = html;
+      });
+    },
+
+    showLogDetail: function (sid, lid) {
+      post('get_log_detail', { schedule_id: sid, log_id: lid }, function (res) {
+        if (!res.status) return toast(res.msg || 'Not found', false);
+        var d = res.data || {};
+        var steps = (d.steps || []).map(function (s) {
+          return '<div>' + esc(s.time) + ' — ' + esc(s.msg) + '</div>';
+        }).join('');
+        var html = '<p>' + statusBadge(d.status) + ' <b>' + esc(d.schedule_name) + '</b></p>'
+          + '<p class="abd-hint">Started: ' + esc(d.started_at) + ' · Finished: ' + esc(d.finished_at || '—') + '</p>'
+          + (d.archive ? '<p>Archive: <code>' + esc(d.archive) + '</code> (' + fmtSize(d.size) + ')</p>' : '')
+          + (d.drive_link ? '<p><a href="' + esc(d.drive_link) + '" target="_blank" rel="noopener" style="color:var(--abd-green)">Open on Google Drive</a></p>' : '')
+          + (d.error ? '<p style="color:var(--abd-danger)">' + esc(d.error) + '</p>' : '')
+          + '<div class="abd-steps-log">' + (steps || 'No steps') + '</div>';
+        openLayer({
+          title: 'Log detail',
+          html: html,
+          area: ['640px', 'auto']
+        });
+      });
+    },
+
+    clearLogs: function () {
+      confirmAct('Clear all backup logs?', function () {
+        post('clear_logs', {}, function (res) {
+          toast(res.msg || '', !!res.status);
+          ABD.loadLogs();
+        });
+      });
+    }
+  };
+
+  document.querySelectorAll('#abd-app .abd-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('#abd-app .abd-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('#abd-app .abd-panel').forEach(function (p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('abd-tab-' + tab.getAttribute('data-tab')).classList.add('active');
+    });
+  });
+
+  // Watch panel theme switches
+  try {
+    var mo = new MutationObserver(function () { applyTheme(); });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-theme-mode', 'theme', 'class'] });
+    if (document.body) mo.observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'data-theme-mode', 'theme', 'class'] });
+  } catch (e) {}
+
+  window.ABD = ABD;
+  applyTheme();
+  ABD.refresh();
+})();
+</script>
