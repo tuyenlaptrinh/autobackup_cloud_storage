@@ -1,12 +1,12 @@
 {
   "title": "Autobackup to Cloud",
   "name": "autobackup_cloud_storage",
-  "ps": "Backup folders and databases to Google Drive, AWS S3, Cloudflare R2, Backblaze B2, DigitalOcean Spaces, Linode, and other S3-compatible storage.",
-  "versions": "1.2.0",
+  "ps": "Backup folders and databases to Google Drive, OneDrive Business, SharePoint, AWS S3, Cloudflare R2, Backblaze B2, and other S3-compatible storage.",
+  "versions": "1.3.0",
   "checks": "/www/server/panel/plugin/autobackup_cloud_storage",
   "author": "Tuyen Pham",
-  "home": "https://github.com/tuyenlaptrinh",
-  "date": "2026-08-03",
+  "home": "https://github.com/tuyenlaptrinh/autobackup_cloud_storage",
+  "date": "2026-10-18",
   "type": "plugin",
   "display": 1,
   "default": false

@@ -15,21 +15,34 @@ aaPanel third-party plugin that backs up folders and databases to cloud storage 
 
 ## Supported storage
 
-| Provider | Type |
-|----------|------|
-| Google Drive | OAuth |
-| AWS S3 | S3 API |
-| Cloudflare R2 | S3-compatible |
-| Backblaze B2 | S3-compatible |
-| DigitalOcean Spaces | S3-compatible |
-| Linode Object Storage | S3-compatible |
-| Wasabi / MinIO / other S3-compatible | S3-compatible |
+| Provider | Type | Notes |
+|----------|------|--------|
+| Google Drive | OAuth | Desktop `credentials.json` |
+| **OneDrive Business** | Microsoft Graph | **Work/school only** — personal OneDrive (`outlook.com` / `live.com`) is **not** supported |
+| **SharePoint** | Microsoft Graph | Site document library + Entra ID app |
+| AWS S3 | S3 API | |
+| Cloudflare R2 | S3-compatible | |
+| Backblaze B2 | S3-compatible | |
+| DigitalOcean Spaces | S3-compatible | |
+| Linode Object Storage | S3-compatible | |
+| Wasabi / MinIO / other S3-compatible | S3-compatible | |
+
+### OneDrive Business & SharePoint
+
+1. Register an app in [Microsoft Entra ID](https://entra.microsoft.com/) (Azure AD).
+2. Add redirect URI: `http://localhost` (public client / web — used like Google’s copy-code flow).
+3. Add **delegated** permissions: `Files.ReadWrite`, `Sites.ReadWrite.All`, `User.Read`, `offline_access`. Grant admin consent if required by your tenant.
+4. Create a **client secret** and paste Application (client) ID + secret into the plugin.
+5. **OneDrive Business:** link with a Microsoft 365 **work or school** account.
+6. **SharePoint:** also set the site URL, e.g. `https://contoso.sharepoint.com/sites/Backups`.
+
+The plugin uses tenant `organizations` so personal Microsoft accounts cannot complete OAuth.
 
 ## Requirements
 
 - aaPanel (Linux)
 - `zip` on the server
-- Panel Python env with `boto3` (S3) and Google API libs (Drive) — installed by `install.sh`
+- Panel Python packages (installed by `install.sh`): `boto3`, Google API libs, `msal`, `requests`
 
 ## Install
 
@@ -54,19 +67,19 @@ bash /www/server/panel/plugin/autobackup_cloud_storage/install.sh install
 
 ## Quick start
 
-1. **Storage** — pick Google Drive or an S3-compatible provider and save credentials.
-2. **Schedules** — create a schedule: source folder, cron preset, optional databases, retention count.
-3. **Run** — use **Run** on a schedule, or wait for cron.
-4. **Logs** — check per-run status and messages.
+1. **Storage** — pick a provider and complete linking / credentials.
+2. **Schedules** — source folder, cron, optional databases, retention count.
+3. **Run** — use **Run**, or wait for cron.
+4. **Logs** — check per-run status.
 
 ### Retention
 
-In the schedule dialog, **Keep on storage (latest backups)**:
+**Keep on storage (latest backups)**:
 
 - `0` — keep all remote archives (default)
 - `N > 0` — after each successful upload, delete older archives of that schedule beyond N newest
 
-Local zip cleanup is controlled separately by **Keep local zip**.
+Local zip cleanup is controlled by **Keep local zip**.
 
 ### Reserved POST fields
 
@@ -82,10 +95,10 @@ autobackup_cloud_storage/
 ├── autobackup_cloud_storage_main.py
 ├── backup_worker.py
 ├── icon.svg / icon.png
-└── acs_lib/          # storage, schedules, dumps, logs
+└── acs_lib/          # storage, schedules, dumps, logs, msgraph_*
 ```
 
-Install path on the panel:
+Install path:
 
 ```text
 /www/server/panel/plugin/autobackup_cloud_storage/

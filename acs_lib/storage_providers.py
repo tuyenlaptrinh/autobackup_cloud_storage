@@ -12,6 +12,18 @@ PROVIDERS = {
         "kind": "gdrive",
         "hint": "OAuth2 via credentials.json (Desktop app).",
     },
+    "onedrive_business": {
+        "id": "onedrive_business",
+        "name": "OneDrive Business",
+        "kind": "msgraph",
+        "hint": "Microsoft 365 work/school only — personal OneDrive (outlook.com / live.com) is not supported. Register an Entra ID app with redirect URI http://localhost.",
+    },
+    "sharepoint": {
+        "id": "sharepoint",
+        "name": "SharePoint",
+        "kind": "msgraph",
+        "hint": "Microsoft 365 SharePoint site document library. Requires Site URL and Entra ID app (redirect URI http://localhost).",
+    },
     "aws_s3": {
         "id": "aws_s3",
         "name": "AWS S3",
@@ -90,6 +102,8 @@ PROVIDERS = {
 def list_providers():
     return [PROVIDERS[k] for k in (
         "gdrive",
+        "onedrive_business",
+        "sharepoint",
         "aws_s3",
         "cloudflare_r2",
         "backblaze_b2",
@@ -108,3 +122,8 @@ def get_provider(provider_id):
 def is_s3(provider_id):
     meta = get_provider(provider_id)
     return meta.get("kind") == "s3"
+
+
+def is_msgraph(provider_id):
+    meta = get_provider(provider_id)
+    return meta.get("kind") == "msgraph"

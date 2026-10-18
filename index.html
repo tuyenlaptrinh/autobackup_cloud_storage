@@ -407,7 +407,7 @@ body.dark .layui-layer.abd-soft-theme .layui-layer-setwin a{
       <div class="abd-logo">AD</div>
       <div>
         <h2>Autobackup to Cloud</h2>
-        <p>Backup folders &amp; databases to Drive / S3 / R2 / B2 / Spaces…</p>
+        <p>Backup folders &amp; databases to Drive / OneDrive Business / SharePoint / S3…</p>
       </div>
     </div>
     <div class="abd-stats">
@@ -500,6 +500,65 @@ body.dark .layui-layer.abd-soft-theme .layui-layer-setwin a{
       </div>
     </div>
 
+    <div id="abd-box-msgraph" style="display:none">
+      <div class="abd-card">
+        <h3>Microsoft 365 — Entra ID app</h3>
+        <p class="hint"><b>OneDrive Business / SharePoint only</b> (work or school account). Personal OneDrive (<code>outlook.com</code> / <code>live.com</code>) is <b>not</b> supported. Register an app in Microsoft Entra ID with redirect URI <code>http://localhost</code> and delegated permissions <code>Files.ReadWrite</code>, <code>Sites.ReadWrite.All</code>, <code>User.Read</code>, <code>offline_access</code>.</p>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Application (client) ID</label>
+            <input type="text" id="abd-ms-client-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off">
+          </div>
+          <div class="abd-field">
+            <label>Client secret</label>
+            <input type="password" id="abd-ms-client-secret" placeholder="Client secret value" autocomplete="new-password">
+          </div>
+        </div>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Backup folder name</label>
+            <input type="text" id="abd-ms-folder-name" value="aaPanel Backups">
+          </div>
+        </div>
+        <div class="abd-row" id="abd-ms-site-row" style="display:none">
+          <div class="abd-field">
+            <label>SharePoint site URL</label>
+            <input type="text" id="abd-ms-site-url" placeholder="https://contoso.sharepoint.com/sites/Backups">
+          </div>
+        </div>
+        <div class="abd-row">
+          <button type="button" class="abd-btn" onclick="ABD.saveMsgraphClient()">Save app credentials</button>
+          <button type="button" class="abd-btn ghost" onclick="ABD.saveMsgraphFolder()">Save folder name</button>
+          <button type="button" class="abd-btn ghost" id="abd-ms-save-site" onclick="ABD.saveMsgraphSite()" style="display:none">Save site URL</button>
+          <button type="button" class="abd-btn danger" id="abd-ms-unlink" onclick="ABD.unlinkMsgraph()" style="display:none">Unlink Microsoft</button>
+        </div>
+        <p class="hint" id="abd-ms-status" style="margin-top:8px;margin-bottom:0">Not linked.</p>
+      </div>
+      <div class="abd-card">
+        <h3>Link Microsoft 365 account</h3>
+        <p class="hint">Sign in with a <b>work/school</b> account only. After approve, copy <code>http://localhost/?code=...</code> from the address bar (page may fail to load) and paste below.</p>
+        <div class="abd-row">
+          <button type="button" class="abd-btn" onclick="ABD.getMsgraphAuthUrl()">Get auth URL</button>
+        </div>
+        <div id="abd-ms-auth-url-box" style="display:none">
+          <div class="abd-auth-url" id="abd-ms-auth-url"></div>
+          <div class="abd-row">
+            <button type="button" class="abd-btn ghost" onclick="ABD.copyMsgraphAuthUrl()">Copy URL</button>
+            <a class="abd-btn ghost" id="abd-ms-auth-open" href="#" target="_blank" rel="noopener">Open in browser</a>
+          </div>
+        </div>
+        <div class="abd-row">
+          <div class="abd-field">
+            <label>Authorization code or redirect URL</label>
+            <textarea id="abd-ms-auth-code" placeholder="Paste code or full http://localhost/?code=…"></textarea>
+          </div>
+        </div>
+        <div class="abd-row">
+          <button type="button" class="abd-btn ok" onclick="ABD.exchangeMsgraphCode()">Complete linking</button>
+        </div>
+      </div>
+    </div>
+
     <div id="abd-box-s3" style="display:none">
       <div class="abd-card">
         <h3>S3-compatible settings</h3>
@@ -575,6 +634,8 @@ body.dark .layui-layer.abd-soft-theme .layui-layer-setwin a{
       <h3>Supported storage</h3>
       <ul class="abd-steps">
         <li><b>Google Drive</b> — OAuth Desktop client + credentials.json</li>
+        <li><b>OneDrive Business</b> — Microsoft 365 work/school only (personal OneDrive not supported)</li>
+        <li><b>SharePoint</b> — Site URL + Microsoft Entra ID app (same OAuth as OneDrive Business)</li>
         <li><b>AWS S3</b> — Access Key / Secret / Bucket / Region</li>
         <li><b>Cloudflare R2</b> — S3 API endpoint <code>https://&lt;ACCOUNT_ID&gt;.r2.cloudflarestorage.com</code></li>
         <li><b>Backblaze B2</b> — S3-compatible endpoint for your region</li>
@@ -959,6 +1020,27 @@ file.jpg</pre>
         document.getElementById('abd-s3-prefix').value = s3.prefix || 'aapanel-backups/';
         document.getElementById('abd-s3-pathstyle').checked = !!s3.path_style;
       }
+
+      var mg = st.msgraph || {};
+      if (document.getElementById('abd-ms-client-id')) {
+        if (mg.client_id) document.getElementById('abd-ms-client-id').value = mg.client_id;
+        var msec = document.getElementById('abd-ms-client-secret');
+        if (msec && !msec.value) msec.placeholder = mg.client_secret_set ? '•••••••• (saved — leave blank to keep)' : 'Client secret value';
+        if (mg.folder_name) document.getElementById('abd-ms-folder-name').value = mg.folder_name;
+        document.getElementById('abd-ms-site-url').value = mg.site_url || '';
+        var msUnlink = document.getElementById('abd-ms-unlink');
+        if (msUnlink) msUnlink.style.display = mg.linked ? '' : 'none';
+        var msSt = document.getElementById('abd-ms-status');
+        if (msSt) {
+          if (mg.linked) {
+            msSt.innerHTML = 'Linked · <b>' + esc(mg.email || 'Microsoft 365') + '</b> (work/school)';
+          } else if (mg.client_configured) {
+            msSt.textContent = 'App credentials saved — link a work/school account below.';
+          } else {
+            msSt.textContent = 'Not linked. Save Entra app credentials first.';
+          }
+        }
+      }
     },
 
     onProviderChange: function (silent) {
@@ -969,9 +1051,15 @@ file.jpg</pre>
       for (var i = 0; i < providers.length; i++) if (providers[i].id === pid) meta = providers[i];
       var hint = document.getElementById('abd-provider-hint');
       if (hint) hint.textContent = meta && meta.hint ? meta.hint : '';
-      var isDrive = pid === 'gdrive' || (meta && meta.kind === 'gdrive');
-      document.getElementById('abd-box-gdrive').style.display = isDrive ? '' : 'none';
-      document.getElementById('abd-box-s3').style.display = isDrive ? 'none' : '';
+      var kind = (meta && meta.kind) || (pid === 'gdrive' ? 'gdrive' : 's3');
+      document.getElementById('abd-box-gdrive').style.display = kind === 'gdrive' ? '' : 'none';
+      document.getElementById('abd-box-msgraph').style.display = kind === 'msgraph' ? '' : 'none';
+      document.getElementById('abd-box-s3').style.display = kind === 's3' ? '' : 'none';
+      var isSp = pid === 'sharepoint';
+      var siteRow = document.getElementById('abd-ms-site-row');
+      var saveSite = document.getElementById('abd-ms-save-site');
+      if (siteRow) siteRow.style.display = isSp ? '' : 'none';
+      if (saveSite) saveSite.style.display = isSp ? '' : 'none';
       if (!silent && meta && meta.kind === 's3' && meta.endpoint) {
         var ep = document.getElementById('abd-s3-endpoint');
         if (ep && (!ep.value || ep.value.indexOf('<') >= 0)) ep.value = meta.endpoint;
@@ -1060,6 +1148,78 @@ file.jpg</pre>
     saveFolderName: function () {
       post('set_drive_folder_name', { folder_name: document.getElementById('abd-folder-name').value }, function (res) {
         toast(res.msg || '', !!res.status);
+      });
+    },
+
+    saveMsgraphClient: function () {
+      var payload = {
+        client_id: document.getElementById('abd-ms-client-id').value,
+        client_secret: document.getElementById('abd-ms-client-secret').value
+      };
+      if (!payload.client_secret && state.storage && state.storage.msgraph && state.storage.msgraph.client_secret_set) {
+        // Backend requires secret on first save; if blank after linked, re-send empty and keep
+        payload.client_secret = '';
+      }
+      post('save_msgraph_client', payload, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) {
+          document.getElementById('abd-ms-client-secret').value = '';
+          ABD.refresh();
+        }
+      });
+    },
+
+    saveMsgraphFolder: function () {
+      post('save_msgraph_folder_name', { folder_name: document.getElementById('abd-ms-folder-name').value }, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) ABD.refresh();
+      });
+    },
+
+    saveMsgraphSite: function () {
+      post('save_msgraph_site', { site_url: document.getElementById('abd-ms-site-url').value }, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) ABD.refresh();
+      });
+    },
+
+    getMsgraphAuthUrl: function () {
+      post('get_msgraph_auth_url', {}, function (res) {
+        if (!res.status) return toast(res.msg || 'Failed', false);
+        var url = (res.data && res.data.auth_url) || '';
+        document.getElementById('abd-ms-auth-url-box').style.display = '';
+        document.getElementById('abd-ms-auth-url').textContent = url;
+        document.getElementById('abd-ms-auth-open').href = url;
+        toast('Microsoft auth URL ready');
+      });
+    },
+
+    copyMsgraphAuthUrl: function () {
+      var t = document.getElementById('abd-ms-auth-url').textContent || '';
+      if (!t) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(t).then(function () { toast('Copied'); }).catch(function () { toast(t); });
+      } else {
+        toast(t);
+      }
+    },
+
+    exchangeMsgraphCode: function () {
+      post('exchange_msgraph_code', { code: document.getElementById('abd-ms-auth-code').value }, function (res) {
+        toast(res.msg || '', !!res.status);
+        if (res.status) {
+          document.getElementById('abd-ms-auth-code').value = '';
+          ABD.refresh();
+        }
+      });
+    },
+
+    unlinkMsgraph: function () {
+      confirmAct('Unlink Microsoft 365 account?', function () {
+        post('unlink_msgraph', {}, function (res) {
+          toast(res.msg || '', !!res.status);
+          if (res.status) ABD.refresh();
+        });
       });
     },
 

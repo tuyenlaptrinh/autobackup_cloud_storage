@@ -193,6 +193,41 @@ class autobackup_cloud_storage_main:
         save_config(cfg)
         return ok("Drive folder name updated.", {"folder_name": name})
 
+    # ----- Microsoft Graph (OneDrive Business / SharePoint) -----
+    def save_msgraph_client(self, args):
+        from acs_lib.msgraph_auth import save_msgraph_client
+
+        return save_msgraph_client(
+            self._get(args, "client_id"),
+            self._get(args, "client_secret"),
+            self._get(args, "tenant"),
+        )
+
+    def save_msgraph_site(self, args):
+        from acs_lib.msgraph_auth import save_msgraph_site
+
+        return save_msgraph_site(self._get(args, "site_url"))
+
+    def save_msgraph_folder_name(self, args):
+        from acs_lib.msgraph_auth import save_msgraph_folder_name
+
+        return save_msgraph_folder_name(self._get(args, "folder_name"))
+
+    def get_msgraph_auth_url(self, args):
+        from acs_lib.msgraph_auth import get_auth_url
+
+        return get_auth_url()
+
+    def exchange_msgraph_code(self, args):
+        from acs_lib.msgraph_auth import exchange_code
+
+        return exchange_code(self._get(args, "code"))
+
+    def unlink_msgraph(self, args):
+        from acs_lib.msgraph_auth import unlink_msgraph
+
+        return unlink_msgraph()
+
     # ----- schedules -----
     def get_schedules(self, args):
         from acs_lib.schedule_mgr import list_schedules

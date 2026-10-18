@@ -6,8 +6,8 @@ from __future__ import print_function
 import os
 import re
 
-from .paths import get_config, save_config, ok, fail, TOKEN_FILE
-from .storage_providers import list_providers, get_provider, is_s3
+from .paths import get_config, save_config, ok, fail, TOKEN_FILE, DEFAULT_MSGRAPH
+from .storage_providers import list_providers, get_provider, is_s3, is_msgraph
 
 
 DEFAULT_S3 = {
@@ -34,6 +34,15 @@ def _ensure_storage_shape(cfg):
         merged = dict(DEFAULT_S3)
         merged.update(cfg["s3"])
         cfg["s3"] = merged
+    if "msgraph" not in cfg or not isinstance(cfg.get("msgraph"), dict):
+        cfg["msgraph"] = dict(DEFAULT_MSGRAPH)
+        changed = True
+    else:
+        merged = dict(DEFAULT_MSGRAPH)
+        merged.update(cfg["msgraph"])
+        if str(merged.get("tenant") or "").lower() in ("common", "consumers", ""):
+            merged["tenant"] = "organizations"
+        cfg["msgraph"] = merged
     if changed:
         save_config(cfg)
     return cfg
@@ -124,6 +133,16 @@ def storage_status_data(cfg=None):
             except Exception:
                 ready = False
         detail = cfg.get("account_email") or ""
+    elif meta.get("kind") == "msgraph":
+        from .msgraph_auth import msgraph_status, get_access_token
+
+        mg_st = msgraph_status()
+        ready = bool(mg_st.get("linked") and get_access_token())
+        if provider_id == "sharepoint" and ready and not (cfg.get("msgraph") or {}).get("site_url"):
+            ready = False
+        detail = mg_st.get("email") or ""
+        if provider_id == "sharepoint" and (cfg.get("msgraph") or {}).get("site_url"):
+            detail = (detail + " · " if detail else "") + (cfg.get("msgraph") or {}).get("site_url")
     else:
         s3 = cfg.get("s3") or {}
         ready = bool(s3.get("bucket") and s3.get("access_key") and s3.get("secret_key"))
@@ -133,6 +152,11 @@ def storage_status_data(cfg=None):
     # Never send full secret to UI — mask
     secret = s3.get("secret_key") or ""
     masked = ("*" * min(8, len(secret))) if secret else ""
+
+    from .msgraph_auth import msgraph_status as _mg_status
+
+    mg_ui = _mg_status()
+    mg_secret = bool((cfg.get("msgraph") or {}).get("client_secret"))
 
     return {
         "provider": provider_id,
@@ -153,6 +177,18 @@ def storage_status_data(cfg=None):
             "drive_folder_name": cfg.get("drive_folder_name", "aaPanel Backups"),
             "drive_folder_id": cfg.get("drive_folder_id", ""),
             "token_valid": ready if meta.get("kind") == "gdrive" else False,
+        },
+        "msgraph": {
+            "linked": bool(mg_ui.get("linked")),
+            "email": mg_ui.get("email") or "",
+            "client_configured": bool(mg_ui.get("client_configured")),
+            "client_id": mg_ui.get("client_id") or "",
+            "client_secret_set": mg_secret,
+            "tenant": mg_ui.get("tenant") or "organizations",
+            "folder_name": mg_ui.get("folder_name") or "aaPanel Backups",
+            "site_url": mg_ui.get("site_url") or "",
+            "token_valid": bool(mg_ui.get("token_valid")),
+            "work_school_only": True,
         },
         "s3": {
             "endpoint": s3.get("endpoint", ""),
@@ -185,6 +221,11 @@ def test_storage(provider_id=None):
             service = get_drive_service()
             folder_id = ensure_backup_folder(service)
             return ok("Google Drive OK.", {"folder_id": folder_id})
+        if meta.get("kind") == "msgraph":
+            from . import msgraph_upload
+
+            info = msgraph_upload.test_connection(pid)
+            return ok("{} connection OK.".format(meta.get("name")), info)
         from . import storage_s3
 
         storage_s3.test_connection(cfg.get("s3") or {})
@@ -208,6 +249,18 @@ def upload_backup(local_path, remote_name, schedule_name=None, provider_id=None)
             schedule_name=schedule_name,
         )
         result["provider"] = "gdrive"
+        return result
+
+    if meta.get("kind") == "msgraph":
+        from . import msgraph_upload
+
+        result = msgraph_upload.upload_file(
+            local_path,
+            remote_name=remote_name,
+            schedule_name=schedule_name,
+            provider_id=pid,
+        )
+        result["provider"] = pid
         return result
 
     from . import storage_s3
@@ -236,6 +289,12 @@ def prune_backups(archive_prefix, keep, schedule_name=None, provider_id=None, up
 
         folder_id = (uploaded or {}).get("folder_id")
         return drive_prune(folder_id, name_regex, keep)
+
+    if meta.get("kind") == "msgraph":
+        from . import msgraph_upload
+
+        folder_id = (uploaded or {}).get("folder_id")
+        return msgraph_upload.prune_backups(folder_id, name_regex, keep, provider_id=pid)
 
     from . import storage_s3
 

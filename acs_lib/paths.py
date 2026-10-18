@@ -17,10 +17,25 @@ TMP_DIR = os.path.join(DATA_DIR, "tmp")
 CONFIG_FILE = os.path.join(DATA_DIR, "config.json")
 TOKEN_FILE = os.path.join(DATA_DIR, "token.json")
 CREDENTIALS_FILE = os.path.join(DATA_DIR, "credentials.json")
+MSGRAPH_TOKEN_FILE = os.path.join(DATA_DIR, "msgraph_token.json")
 SCHEDULES_FILE = os.path.join(DATA_DIR, "schedules.json")
 CRON_PREFIX = "autobackup_cloud_storage_"
 
 _file_lock = threading.Lock()
+
+DEFAULT_MSGRAPH = {
+    "client_id": "",
+    "client_secret": "",
+    # organizations = work/school only (blocks personal MSA)
+    "tenant": "organizations",
+    "linked": False,
+    "account_email": "",
+    "folder_name": "aaPanel Backups",
+    "folder_id": "",
+    "site_url": "",
+    "site_id": "",
+    "drive_id": "",
+}
 
 DEFAULT_CONFIG = {
     "storage_provider": "gdrive",
@@ -39,6 +54,7 @@ DEFAULT_CONFIG = {
         "prefix": "aapanel-backups/",
         "path_style": False,
     },
+    "msgraph": dict(DEFAULT_MSGRAPH),
 }
 
 
@@ -79,9 +95,19 @@ def write_json(path, data):
 
 
 def get_config():
-    cfg = read_json(CONFIG_FILE, {})
+    cfg = read_json(CONFIG_FILE, {}) or {}
     merged = dict(DEFAULT_CONFIG)
-    merged.update(cfg or {})
+    merged.update(cfg)
+    # Deep-merge nested dicts so new keys appear after upgrades
+    s3 = dict(DEFAULT_CONFIG.get("s3") or {})
+    s3.update(cfg.get("s3") or {})
+    merged["s3"] = s3
+    mg = dict(DEFAULT_MSGRAPH)
+    mg.update(cfg.get("msgraph") or {})
+    # Never allow personal-account tenants
+    if str(mg.get("tenant") or "").lower() in ("common", "consumers", ""):
+        mg["tenant"] = "organizations"
+    merged["msgraph"] = mg
     return merged
 
 

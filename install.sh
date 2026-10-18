@@ -35,9 +35,9 @@ Install()
 
     # Prefer panel pyenv pip; fall back to system pip3
     if [ -x "${PYENV}" ]; then
-        ${PYENV} install -q boto3 botocore google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib 2>>$install_tmp || true
+        ${PYENV} install -q boto3 botocore google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib msal requests 2>>$install_tmp || true
     elif command -v pip3 >/dev/null 2>&1; then
-        pip3 install -q boto3 botocore google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib 2>>$install_tmp || true
+        pip3 install -q boto3 botocore google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib msal requests 2>>$install_tmp || true
     fi
 
     # Ensure zip is available for archive creation
